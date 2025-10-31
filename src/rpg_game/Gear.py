@@ -29,7 +29,7 @@ class Gear:
 
     def __str__(self):
         """Pretty print gear info"""
-        # change format later if we want percent stats or bonuses
+        # format gear display
         stat_str = ', '.join([f"{k.upper()}: {v:+d}" for k, v in self.stats.items()])
         return f"[{self.rarity.upper()}] {self.name} ({self.gear_type}) - {stat_str}"
 
@@ -43,9 +43,11 @@ if __name__ == '__main__':
     sword = Gear("Sword", "sword", "common", {'atk': 1, 'crit': 1})
     Heavens_Spear = Gear("Heavens Spear", "Spear", "divine", {'atk': 100, 'crit': 300})
     Mjolnir = Gear("Mjolnir", "Hammer", "divine", {'atk': 150, 'crit': 200, 'def': 99})
+    Kaleos_Admin_Sword = Gear("Admin_Sword", "Sword", "Admin", {'atk': 9999, 'crit': 9999, 'def': 9999, 'hp': 9999})
     
     print(helmet)
     print(sword_ring)
     print(sword)
     print(Heavens_Spear)
     print(Mjolnir)
+    print(Kaleos_Admin_Sword)
