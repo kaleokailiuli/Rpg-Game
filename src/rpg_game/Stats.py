@@ -1,13 +1,13 @@
 """
-Stats class for RPG game
-Handles stat storage
+Stats class
+handles stats
 """
 
 #stores stats
 
 
 class Stats:
-    """Represents a collection of stats"""
+    """collection of stats"""
 
     def __init__(self, hp=0, atk=0, defense=0, speed=0, crit=0):
         """
@@ -46,3 +46,4 @@ if __name__ == '__main__':
     
     print("Enemy Stats:")
     print(enemy_stats)
+    print()

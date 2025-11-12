@@ -1,6 +1,6 @@
 """
 Coin class
-Handles currency drops
+Handles currency
 """
 
 class Coin:
