@@ -35,7 +35,7 @@ class Player:
             self.current_hp = 0
     
     def is_alive(self):
-        """Check if player is alive"""
+        """Checks if Player is alive"""
         return self.current_hp > 0
     
     def __str__(self):

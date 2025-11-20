@@ -1,6 +1,6 @@
 """
-Gear class for RPG game
-Handles equipment items
+Gear class
+Handles items
 """
 
 # maybe later make subclasses for weapons or armor

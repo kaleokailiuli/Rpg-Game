@@ -25,7 +25,7 @@ class Enemy:
         self.current_hp = self.max_hp
         self.atk = 20 + level * 5
         
-        # maybe add defense, speed, crit later
+        # will add defense, speed, and crit later
     
     def take_damage(self, damage):
         """Take damage"""
