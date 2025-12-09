@@ -1,9 +1,7 @@
 """Main Class"""
 
-
 import sys
 import os
-
 
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QLabel,
                                QHBoxLayout, QFrame, QVBoxLayout, QPushButton, QTextEdit)
@@ -75,16 +73,6 @@ class MainWindow(QMainWindow):
         self.spawn_button.clicked.connect(self.spawn_goblin)
         battle_layout.addWidget(self.spawn_button)
 
-        # Attack button
-        self.attack_button = QPushButton("Attack")
-        self.attack_button.setStyleSheet(
-            "background-color: #7F8C8D; color: white; border: none; padding: 10px; "
-            "font-size: 14px; border-radius: 5px;"
-        )
-        self.attack_button.clicked.connect(self.attack_enemy)
-        self.attack_button.setEnabled(False)
-        battle_layout.addWidget(self.attack_button)
-
         # Combat log
         self.combat_log = QTextEdit()
         self.combat_log.setReadOnly(True)
@@ -107,36 +95,6 @@ class MainWindow(QMainWindow):
         self.current_enemy = goblin
         self.arena_label.setText(f"⚔️ {goblin.name}\nLv.{goblin.level} {goblin.rarity.upper()}")
         self.log("A Goblin appears!")
-        self.attack_button.setEnabled(True)
-
-    def attack_enemy(self):
-        """player hits enemy, enemy hits back."""
-        if not self.current_enemy:
-            self.log("There is no enemy to attack.")
-            return
-
-        # Player attacks enemy
-        damage_to_enemy = self.player.base_atk
-        self.current_enemy.take_damage(damage_to_enemy)
-        self.log(f"You hit the {self.current_enemy.name} for {damage_to_enemy} damage.")
-
-        # Check if enemy is defeated
-        if not self.current_enemy.is_alive():
-            self.log(f"The {self.current_enemy.name} is defeated!")
-            self.arena_label.setText("BATTLE ARENA")
-            self.current_enemy = None
-            self.attack_button.setEnabled(False)
-            return
-
-        # Enemy attacks player
-        damage_to_player = self.current_enemy.atk
-        self.player.take_damage(damage_to_player)
-        self.log(f"The {self.current_enemy.name} hits you for {damage_to_player} damage.")
-
-        # check if player is dead
-        if not self.player.is_alive():
-            self.log("You have been defeated!")
-
 
 
 if __name__ == '__main__':
