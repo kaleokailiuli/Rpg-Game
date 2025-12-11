@@ -4,14 +4,13 @@ import sys
 import os
 
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QLabel,
-                               QHBoxLayout, QFrame, QVBoxLayout, QPushButton, QTextEdit)
+                               QHBoxLayout, QFrame, QVBoxLayout, QPushButton, QTextEdit, QGridLayout)
 from PySide6.QtCore import Qt
 from Player import Player
 from Enemy import Enemy
 from Gear import Gear
 from Coin import Coin
 from Stats import Stats
-
 
 class MainWindow(QMainWindow):
     """Main game window."""
@@ -46,6 +45,39 @@ class MainWindow(QMainWindow):
         # battle system values
         self.player = Player("Hero")
         self.current_enemy = None
+
+        #Inventory panel
+        self.inventory_frame = QFrame(central_widget)
+        self.inventory_frame.setFixedSize(300, 350)
+        self.inventory_frame.move(20, 0)
+        self.inventory_frame.setStyleSheet(
+            "background-color: #34495E; border: 2px solid #2C3E50; border-radius: 10px;"
+        )
+
+        inventory_layout = QVBoxLayout(self.inventory_frame)
+        inventory_layout.setContentsMargins(10, 10, 10, 10)
+
+        # Inventory title
+        inv_label = QLabel("INVENTORY")
+        inv_label.setAlignment(Qt.AlignCenter)
+        inv_label.setStyleSheet("color: white; font-size: 16px; font-weight: bold;")
+        inventory_layout.addWidget(inv_label)
+
+        # grid slots
+        grid = QGridLayout()
+        grid.setSpacing(5)
+        inventory_layout.addLayout(grid)
+
+        self.inventory_slots = []
+        for r in range(5):  # 5 rows
+            for c in range(4):  # 4 columns
+                slot = QFrame(self.inventory_frame)
+                slot.setFixedSize(50, 50)
+                slot.setStyleSheet(
+                    "background-color: #2C3E50; border: 1px solid #7F8C8D; border-radius: 4px;"
+                )
+                grid.addWidget(slot, r, c)
+                self.inventory_slots.append(slot)
 
         # Battle frame
         self.battle_frame = QFrame(central_widget)
@@ -95,7 +127,6 @@ class MainWindow(QMainWindow):
         self.current_enemy = goblin
         self.arena_label.setText(f"⚔️ {goblin.name}\nLv.{goblin.level} {goblin.rarity.upper()}")
         self.log("A Goblin appears!")
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
