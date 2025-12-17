@@ -2,7 +2,7 @@
 Enemy class
 enemy stats and rewards
 """
-
+import random
 
 class Enemy:
     """Represents an enemy"""
@@ -20,12 +20,11 @@ class Enemy:
         self.level = level
         self.rarity = rarity
         
-        # Basic stats
-        self.max_hp = 50 + level * 10
+        # Basic Stats
+        self.max_hp = random.randint(150, 200) + (level * random.randint(10, 12))
         self.current_hp = self.max_hp
-        self.atk = 20 + level * 5
+        self.atk = random.randint(25, 35) + (level * random.randint(5, 8))
         
-        # will add defense, speed, and crit later
     
     def take_damage(self, damage):
         """Take damage"""
