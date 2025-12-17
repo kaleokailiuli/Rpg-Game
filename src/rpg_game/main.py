@@ -18,7 +18,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("RPG Game")
-        self.setFixedSize(1200, 800)
+        self.setFixedSize(1200, 850) 
 
         # Central widget
         central_widget = QWidget(self)
@@ -54,7 +54,7 @@ class MainWindow(QMainWindow):
         # Inventory panel
         self.inventory_frame = QFrame(self.left_column)
         self.inventory_frame.setStyleSheet(
-            "background-color: #34495E; border: 2px solid #2C3E50; border-radius: 10px;"
+            "background-color: #34495E; border: 2px solid #2C3E50; border-radius: 3px;"
         )
 
         inventory_layout = QVBoxLayout(self.inventory_frame)
@@ -150,7 +150,7 @@ class MainWindow(QMainWindow):
         center_layout.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
 
         self.battle_frame = QFrame(center_column)
-        self.battle_frame.setFixedSize(500, 250)
+        self.battle_frame.setFixedSize(500, 300)  
         self.battle_frame.setStyleSheet(
             "background-color: #2C3E50; border: 2px solid #34495E; border-radius: 10px;"
         )
@@ -170,6 +170,14 @@ class MainWindow(QMainWindow):
         )
         self.spawn_button.clicked.connect(self.spawn_goblin)
         battle_layout.addWidget(self.spawn_button)
+
+        self.attack_button = QPushButton("Attack")
+        self.attack_button.setStyleSheet(
+            "background-color: #8B0A0A; color: white; border: none; padding: 10px; "
+            "font-size: 14px; border-radius: 5px;"
+        )
+        self.attack_button.clicked.connect(self.player_attack)
+        battle_layout.addWidget(self.attack_button)
 
         self.combat_log = QTextEdit()
         self.combat_log.setReadOnly(True)
@@ -195,8 +203,34 @@ class MainWindow(QMainWindow):
         """Create a goblin and show it in the arena."""
         goblin = Enemy("Goblin", 1, "common")
         self.current_enemy = goblin
-        self.arena_label.setText(f"⚔️ {goblin.name}\nLv.{goblin.level} {goblin.rarity.upper()}")
+        self.arena_label.setText(f" {goblin.name}\nLv.{goblin.level} {goblin.rarity.upper()}\nHP: {goblin.max_hp}/{goblin.max_hp}")
         self.log("A Goblin appears!")
+
+    def player_attack(self):
+        if self.current_enemy is not None: #checks to see if there is an enemy spawned alkready
+            self.current_enemy.take_damage(self.player.base_atk)
+            self.log(f"You attacked {self.current_enemy.name} for {self.player.base_atk} damage!")
+            self.arena_label.setText(f" {self.current_enemy.name}\nLv.{self.current_enemy.level} {self.current_enemy.rarity.upper()}\nHP: {self.current_enemy.current_hp}/{self.current_enemy.max_hp}")
+            if not self.current_enemy.is_alive():
+                self.log(f"You killed {self.current_enemy.name}!")
+                self.current_enemy = None
+                self.arena_label.setText("BATTLE ARENA")
+            else:
+                self.enemy_attack()
+        else:
+            self.log("No enemy to attack!")
+
+    def enemy_attack(self):
+        if self.current_enemy is not None:
+            self.player.take_damage(self.current_enemy.atk)
+            self.log(f"{self.current_enemy.name} hit you for {self.current_enemy.atk} damage!")
+            self.hp_label.setText(f"HP: {self.player.current_hp}/{self.player.base_hp}")
+            if not self.player.is_alive():
+                self.log("You died!")
+                self.current_enemy = None
+                self.arena_label.setText("BATTLE ARENA")
+                self.player.current_hp = self.player.base_hp
+                self.hp_label.setText(f"HP: {self.player.current_hp}/{self.player.base_hp}")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
